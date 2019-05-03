@@ -1,0 +1,75 @@
+##
+# Servidores
+# ref. https://github.com/okfn-brasil/suporte/blob/master/webservers/scripts/sites-available/oficial.news
+# test http://OSM.codes
+##
+
+server { ## OSM.CODES
+    server_name osm.codes www.osm.codes;
+    access_log /var/log/nginx/osm.codes.access_log;
+    root /var/www/osm.codes/;
+    index  index.php index.html index.htm;
+
+    add_header X-Frame-Options SAMEORIGIN; #iframe
+
+    location /_sql {
+      rewrite ^/_sql/(.*) /$1 break;
+      proxy_pass http://127.0.0.1:$POSTGREST;
+    }
+    #location /_doc {  rewrite ^/_doc/(.*) /$1 break; proxy_pass http://127.0.0.1:5001; }
+
+    location /geo: {
+      rewrite "^/?geo:(\-?\d+\.?\d*),(\-?\d+\.?\d*)$"
+              /rpc/latlng_to_city?lat=$1&lng=$2
+              break;
+      rewrite "^/?geo:ghs(?:\-std|\-b32ghs)?:([^,]+)$"
+              /rpc/geohash_to_city?code=$1
+              break;
+      proxy_pass http://127.0.0.1:$POSTGREST;
+    }
+
+    location /_latlng2olc {
+      rewrite "^/?_latlng2olc/(\-?\d+\.?\d*),(\-?\d+\.?\d*)$"
+        /rpc/latlng_to_olc_city?lat=$1&lng=$2
+        break;
+      proxy_pass http://127.0.0.1:$POSTGREST;
+    }
+
+    location @resolver {
+      rewrite "^/?([^/]+?)(\.[a-zA-z]+)?$"
+         /index.php?q=$1&ext=$2&accept=$http_accept
+         last;
+    }
+
+    location / {
+            try_files $uri $uri/ @resolver;
+    }
+
+    location ~ \.php$ {
+      include snippets/fastcgi-php.conf;
+      fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+    }
+} # \server
+
+
+server { #OLC para comparar com plus.codes .. Lixo?
+    server_name olc.osm.codes;
+    access_log /var/log/nginx/olc.osm.codes.access_log;
+    root /var/www/olc.osm.codes/;
+    index  index.php index.html index.htm;
+
+    #add_header X-Frame-Options SAMEORIGIN; #iframe
+
+    location / {
+            try_files $uri $uri/ @resolver;
+    }
+    location  @resolver {
+      rewrite "^/?([^/]+?)(\.[a-zA-z]+)?$"
+      /index.php?q=$1&ext=$2&accept=$http_accept
+      last;
+    }
+    location ~ \.php$ {
+      include snippets/fastcgi-php.conf;
+      fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+    }
+} # \server

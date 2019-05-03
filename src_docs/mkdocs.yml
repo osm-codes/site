@@ -1,0 +1,11 @@
+site_name: OSM.CODES
+docs_dir: ./docs
+pages:
+
+    - pt
+      - Especificação: spec.md
+    - en
+      - Specification: spec.md
+
+extra_javascript:
+    - assets/leaflet-bing-layer.min.js
