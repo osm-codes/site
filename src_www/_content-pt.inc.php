@@ -14,21 +14,12 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <script>
-      function chgLang(lang) {
-		  $("article[lang!='"+lang+"']").toggle(false)
-		  $("article[lang='"+lang+"']").toggle(true)
-          return (lang=='pt')? 'en': 'pt';
-      }
       $(document).ready(function(){ // ONLOAD
-          chgLang('pt')
-
           $('nav .menuIcon').click(function () {
               let x = document.getElementById('topnav1');
               x.className = (x.className === 'top')? 'top responsive': 'top'
           })
           $('#chg_lang').click(function () {
-            //let lang = $(this).text().slice(1,3)
-            //let newLang = chgLang(lang)
             if ( confirm("Mudando língua para inglês, confirme!\n\nChanging language to English, confirm!") )
              location.href="index.php?lang=en"
             //$(this).text('['+newLang+']').prop('title','nov tit')
@@ -61,34 +52,38 @@
 if ($msg) echo "<p>$msg</p>";
 ?>
 
-<main>
+<main lang="pt-BR" id="_top">
 
 <header>
-  <h1><tt>OSM.codes</tt> - Um portal para todos os geocódigos,
-    incluindo códigos de localização que as pessoas possam lembrar de cor
+  <h1>Um portal para todos os geocódigos,
+    <br/>incluindo códigos de localização que as pessoas possam lembrar de cor
   </h1>
 </header>
 
 
-<article lang="pt" id="_top">
-
+<article>
 <!-- lead section -->
-<p>Todo país é soberano, deveria ser o dono de seus códigos. Ajude seu país e sua comunidade a serem donos do <tt>OSM.codes</tt>.</p>
+<p>Todo país é soberano, e deveria ser o dono de seus geocódigos. Ajude seu país e sua comunidade a serem donos do <tt>OSM.codes</tt>.</p>
 
 <p>Nosso objetivo: que os <tt>OSM.codes</tt> sejam <b>realmente <a rel="external" href="https://index.okfn.org/dataset/postcodes/" target="_blank">livres e abertos</a></b> e de propriedade das jurisdições e suas comunidades,
   para qualquer um usar, para sempre.</p>
 
 <section id="_what">
-<h3>Nossos códigos</h3>
+<h3>Nossos geocódigos</h3>
 <p>No <tt>OSM.codes</tt> estão sendo reunidos serviços de longa duração para ambos,
  tecnologias de uso geral e soluções oficiais adotadas por países que estão substituindo o
  <a rel="help" href="https://pt.wikipedia.org/wiki/C%C3%B3digo_postal" target="_blank">código postal</a> tradicional
  por um <i>código postal de granularidade mais fina</i>, que é o <i>geocódigo oficial do país</i>.
 </p>
+<p>O geocódigo substitui as coordenadas geográficas usuais, que na Internet são
+  expressas na forma <code>geo:latitude,longititude</code>
+  do <a href="https://tools.ietf.org/html/rfc5870" rel="external" target="_blank">padrão Geo URI</a>
+  (p. ex. <code>geo:13.4125,103.8667</code>). São compridas e difíceis de lembrar.
+</p>
 <p>Os <i>geocódigos globais</i>, de uso geral, são soluções tecnológicas para se reduzir o comprimento das
-   tradicionais coordenadas de latitude e longitude. São soluções abertas,
+    coordenadas. São soluções abertas,
    reconhecidas pela comunidade OpenStreetMap (OSM), tais como Geohash e OLC (Open Location Code).
-   Além disso, os geocódigos informam mais do que as coordenadas, também expressam a precisão,
+   Além disso, os geocódigos informam mais do que as coordenadas, eles também expressam a precisão,
    que é proporcional ao seu número de dígitos.
    Alguns exemplos:
    <table>

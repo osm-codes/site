@@ -92,6 +92,13 @@ article > section > section h4 {
  * ETC.
  */
 
+main header h1 {
+  color: #666;
+  font-size: calc(12px + 1vw);
+  padding: 12pt;
+  text-align:center;
+}
+
 footer {background-color: #f5f5f5;}
 
 .wslink {font-family: monospace}
