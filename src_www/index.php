@@ -20,15 +20,34 @@ if ($q && $ext!='json' && (!$acceptText || $acceptText=='text')) {
     include('_libOlc.inc.php');
     $mm[1] = str_replace(' ','+',$mm[1]);
     $c = OpenLocationCode::decode($mm[1]);
+
     $params = "mlat={$c['latitudeCenter']}&mlon={$c['longitudeCenter']}";
-    header("Location: https://www.openstreetmap.org/?$params&zoom=13");
+    $urlOsm = "https://www.openstreetmap.org/?$params&zoom=13";
+    $urlNom = "https://nominatim.openstreetmap.org/reverse?lat={$c['latitudeCenter']}&lon={$c['longitudeCenter']}&format=json";
+    $q='';
+    $msg = "<p>O geocódigo OLC <b>$mm[1]</b> corresponde ao ponto <coode>geo:{$c['latitudeCenter']},{$c['longitudeCenter']}</code></p>";
+    $msg .= "<p><a href='$urlOsm'>Mapa OpenStreetMap do ponto</a></p>";
+    $msg .= "<p><a href='$urlNom'>Endereço mais próximo pelo Nominatim</a></p>";
+    include ("_catalog.inc.php");
+    exit;
+    //header("Location: https://www.openstreetmap.org/?$params&zoom=13");
 
   } elseif (preg_match('/^\s*(?:ghs\/|ghs:|geo:ghs:)([A-Z\d][A-Z\d\.]+)\s*$/i',$q,$mm)) {
     include('_libGeohash.inc.php');
     $mm[1] = str_replace('.','',$mm[1]);
     $g = new Geohash();
     $c = $g->decode($mm[1]);
-    header("Location: https://www.openstreetmap.org/?mlat={$c[0]}&mlon={$c[1]}&zoom=13");
+
+    $params = "mlat={$c[0]}&mlon={$c[1]}";
+    $urlOsm = "https://www.openstreetmap.org/?$params&zoom=13";
+    $urlNom = "https://nominatim.openstreetmap.org/reverse?lat={$c[0]}&lon={$c[1]}&format=json";
+    $q='';
+    $msg = "<p>O (geocódigo) Geohash <b>$mm[1]</b> corresponde ao ponto <coode>geo:{$c[0]},{$c[1]}</code></p>";
+    $msg .= "<p><a href='$urlOsm'>Mapa OpenStreetMap do ponto</a></p>";
+    $msg .= "<p><a href='$urlNom'>Endereço mais próximo pelo Nominatim</a></p>";
+    include ("_catalog.inc.php");
+    exit;
+    //header("Location: https://www.openstreetmap.org/?mlat={$c[0]}&mlon={$c[1]}&zoom=13");
 
   } elseif (preg_match('/^\s*([a-z][a-z]\-[a-z][a-z][a-z]?\-[a-z][a-z]+|[a-z][a-z]\-[a-z][a-z][a-z]?|[a-z][a-z])\-([^\-\/]*)\s*$/i',$q,$mm)) {
     $prefix = $mm[1];

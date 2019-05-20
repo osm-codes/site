@@ -1,6 +1,5 @@
 <?php
 /* CATALOGO*/
-$msg="";
 $IDX = "index.php?lang=$lang"; // ou index.php?...
 
 if ($q) {
@@ -66,7 +65,7 @@ if ($q) {
 
 <main>
 <article lang="pt" id="_top">
-  <p>Solução de catálogo ... </p>
+  <p>Solução de catálogo (em construção)... </p>
   <?php echo $msg; ?>
 
 </article>

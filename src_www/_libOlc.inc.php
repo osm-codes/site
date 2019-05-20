@@ -446,9 +446,9 @@ class OpenLocationCode
      *                 of two of the corners of the area, the center, and the
      *                 length of the original code.
      */
-    public static function decode($code)
+    public static function decode($code,$getFull=false)
     {
-        if (!self::isFull($code)) {
+        if ($getFull && !self::isFull($code)) {
             throw new \Exception('Passed Open Location Code is not a valid full code');
         }
 

@@ -13,31 +13,33 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script src="assets/demo_home.js"></script>
 <script>
-      $(document).ready(function(){ // ONLOAD
-          $('nav .menuIcon').click(function () {
-              let x = document.getElementById('topnav1');
-              x.className = (x.className === 'top')? 'top responsive': 'top'
-          })
-          $('#chg_lang').click(function () {
-            if ( confirm("Mudando língua para inglês, confirme!\n\nChanging language to English, confirm!") )
-             location.href="index.php?lang=en"
-            //$(this).text('['+newLang+']').prop('title','nov tit')
-          })
-      }); // ONLOAD
+$(document).ready(function(){ // ONLOAD
+    $('nav .menuIcon').click(function () {
+        let x = document.getElementById('topnav1');
+        x.className = (x.className === 'top')? 'top responsive': 'top'
+    })
+    $('#chg_lang').click(function () {
+      if ( confirm("Mudando língua para inglês, confirme!\n\nChanging language to English, confirm!") )
+       location.href="index.php?lang=en"
+      //$(this).text('['+newLang+']').prop('title','nov tit')
+    })
+    setPt();
+    $('#selStd_rd input, #selGlob-tec, #selPt, #selRes').change( function () {setPt();} );
+}); // ONLOAD
 </script>
-
 </head>
 
 <body>
 <nav class="top" id="topnav1">
   <!-- current top menu -->
-  <a href="#_top" class="home"><tt>OSM.codes</tt></a>
+  <a href="index.php" class="home"><tt>OSM.codes</tt></a>
 
-  <a href="#_what" title="O que são os códigos">O que</a>
-  <a href="#_who" title="Quem somos">Quem</a>
-  <a href="#_status" title="Situação dos países filiados">Situação</a>
-  <a href="#_how" title="Como funciona e como a comunidade do seu país pode participar">Como</a>
+  <a href="index-FAQ.php#_what" title="O que são os códigos">O que</a>
+  <a href="index-FAQ.php#_who" title="Quem somos">Quem</a>
+  <a href="index-FAQ.php#_status" title="Situação dos países filiados">Situação</a>
+  <a href="index-FAQ.php#_how" title="Como funciona e como a comunidade do seu país pode participar">Como</a>
 
   <!-- a href="index-dets.php?lang=pt" title="Mais detalhes sobre tudo isso">Detalhes</a -->
   <a href="index-CAT.php?lang=pt" title="Catálogo de dados sobre os códigos">Catálogo</a>
@@ -56,170 +58,76 @@ if ($msg) echo "<p>$msg</p>";
 
 <header>
   <h1>Um portal para todos os geocódigos,
-    <br/>incluindo códigos de localização que as pessoas possam lembrar de cor
+    oficiais e de uso geral
   </h1>
 </header>
-
-
 <article>
-<!-- lead section -->
-<p>Todo país é soberano, e deveria ser o dono de seus geocódigos. Ajude seu país e sua comunidade a serem donos do <tt>OSM.codes</tt>.</p>
-
-<p>Nosso objetivo: que os <tt>OSM.codes</tt> sejam <b>realmente <a rel="external" href="https://index.okfn.org/dataset/postcodes/" target="_blank">livres e abertos</a></b> e de propriedade das jurisdições e suas comunidades,
-  para qualquer um usar, para sempre.</p>
-
-<section id="_what">
-<h3>Nossos geocódigos</h3>
-<p>No <tt>OSM.codes</tt> estão sendo reunidos serviços de longa duração para ambos,
- tecnologias de uso geral e soluções oficiais adotadas por países que estão substituindo o
- <a rel="help" href="https://pt.wikipedia.org/wiki/C%C3%B3digo_postal" target="_blank">código postal</a> tradicional
- por um <i>código postal de granularidade mais fina</i>, que é o <i>geocódigo oficial do país</i>.
-</p>
-<p>O geocódigo substitui as coordenadas geográficas usuais, que na Internet são
-  expressas na forma <code>geo:latitude,longititude</code>
-  do <a href="https://tools.ietf.org/html/rfc5870" rel="external" target="_blank">padrão Geo URI</a>
-  (p. ex. <code>geo:13.4125,103.8667</code>). São compridas e difíceis de lembrar.
-</p>
-<p>Os <i>geocódigos globais</i>, de uso geral, são soluções tecnológicas para se reduzir o comprimento das
-    coordenadas. São soluções abertas,
-   reconhecidas pela comunidade OpenStreetMap (OSM), tais como Geohash e OLC (Open Location Code).
-   Além disso, os geocódigos informam mais do que as coordenadas, eles também expressam a precisão,
-   que é proporcional ao seu número de dígitos.
-   Alguns exemplos:
-   <table>
-   <tr><th>Latitude,Longitude<th>Geocódigo global<th>Opções de resolução do código</tr>
-   <tr>
-     <td><code>geo:<big>-23,-46</big></code><br/>ponto no Brasil, sem precisão definida</td>
-     <td><code>geo:ghs:<big>6gzm1</big></code><br/>Geohash do ponto, uma caixa com ~5&nbsp;km de lado.</td>
-     <td>Links para o mapa OSM através das coordenadas
-       <a rel="shortlink" href="http://osm.codes/-23,-46">osm.codes/&#8209;23,&#8209;46</a>
-       e através do código <a rel="shortlink" href="http://osm.codes/ghs:6gzm1">osm.codes/ghs:6gzm1</a>.
-       Serviços de catálogo: para <a href="#">humanos</a>,
-       para <a rel="shortlink" href="http://osm.codes/geo:ghs:6gzm1">aplicativos</a>.
-     </td>
-   </tr>
-   <tr>
-     <td><code>geo:<big>&#8209;23.55041,&#8209;46.63394</big>;u=8</code><br/>ponto vizinho, com precisão de ~8&nbsp;m.</td>
-     <td><code>geo:ghs:<big>6gyf4bf0</big></code><br/>Geohash do ponto, caixa com ~25&nbsp;m de lado.</td>
-     <td>Links para o mapa OSM, através das coordenadas
-       <a rel="shortlink" href="http://osm.codes/-23.55041,-46.63394">osm.codes/&#8209;23.55041,&#8209;46.63394</a>
-       e através do código <a rel="shortlink" href="http://osm.codes/ghs:6gyf4bf0">osm.codes/ghs:6gyf4bf0</a>.
-       Serviços de catálogo: para <a href="#">humanos</a>, para <a rel="shortlink" href="#">aplicativos</a>.
-     </td>
-   </tr>
-   <tr>
-     <td><code>geo:<big>&#8209;23.55041,&#8209;46.63394</big>;u=6</code><br/>idem, com precisão de ~6&nbsp;m.</td>
-     <td><code>geo:olc:<big>588MC9X8+RC</big></code><br/>OLC do ponto, caixa com ~15&nbsp;m de lado.</td>
-     <td>Link para o mapa OSM, através do código <a rel="shortlink" href="http://osm.codes/olc:588MC9X8+RC">osm.codes/olc:588MC9X8+RC</a>.
-       Serviços de catálogo: para <a href="#">humanos</a>, para <a rel="shortlink" href="#">aplicativos</a>.
-     </td>
-   </tr>
-   </table>
-</p>
-
-<p>Os <i>geocódigos locais</i>, de uso oficial ou contextualizado, são códigos compostos de duas partes,
-  <br/><i>Prefixo</i>: é a <b>abreviação</b> oficial da região, baseado no padrão  ISO 3166-2, que define o código do país (ex. <code><big>AR</big></code> é Argentina e <code><big>BR</big></code> é Brasil)
-  e o código de subdivisão de primeiro nível (ex. <code><big>BR-PA</big></code> é o estado do Pará), ou ainda mais um nível (<code><big>BR-PA-ALT</big></code> é o município de Altamira).
-  <br/><i>Sufixo</i>: é um <b>geocódigo local</b>, restrito ao polígono do prefixo, calibrado para fins de <a href="./CLP">Código Localizador de Portão</a>, sendo também flexível para outros fins. <br/>Exemplos:
-   <table>
-   <tr><th>Geocódigo oficial<th>Geocódigo local<th>Opções de resolução do código</tr>
-   <tr>
-     <td><code>geo:<big>BR-PA-ATM-19n</big></code><br/>(experimental) localização do Aeroporto de Altamira com precisão de 20&nbsp;m.</td>
-     <td><code>geo:.<big>19n</big></code><br/>referência ao mesmo ponto para quem já está em Altamira.</td>
-     <td>Link para o mapa OSM através do <i>geocódigo oficial</i>
-       <a rel="shortlink" href="http://osm.codes/BR-PA-ATM-19n">osm.codes/BR-PA-ATM-19n</a>.
-       Serviços de catálogo: para <a href="#">humanos</a>, para <a rel="shortlink" href="#">aplicativos</a>.
-     </td>
-   </tr>
-   <tr>
-     <td><code>geo:<big>BR-68372-590</big></code><br/>(oficial vigente - CEP) localização parcial do aeroporto de Altamira.</td>
-     <td>(pendente mapa do CEP e suas regiões)</td>
-     <td>Link para o mapa OSM através do CEP, o <i>geocódigo oficial</i> vigente, de baixa resolução:
-       <a rel="shortlink" href="http://osm.codes/BR-68372-590">osm.codes/BR-68372-590</a> (nuvem de pontos sem precisão).
-       Serviços de catálogo: para <a href="#">humanos</a>, para <a rel="shortlink" href="#">aplicativos</a>.
-     </td>
-   </tr>
-   <tr>
-     <td><code>geo:<big>CV-PR-WGW7+49</big></code><br/>(oficial vigente - OLC) localização do Aeroporto de Praia (Cabo Verde) com precisão de 15&nbsp;m.</td>
-     <td><code>geo:.<big>WGW7+49</big></code><br/>referência ao mesmo ponto para quem já está em Praia.</td>
-     <td>Link para o mapa oficial de Cabo Verde através do <i>geocódigo oficial</i>
-       <a rel="shortlink" href="http://osm.codes/CV-PR-WGW7+49">osm.codes/CV-PR-WGW7+49</a>.
-       Serviços de catálogo: para <a href="#">humanos</a>, para <a rel="shortlink" href="http://osm.codes/geo:CV-PR-WGW7+49">aplicativos</a>.
-     </td>
-   </tr>
-   <tr>
-     <td><code>geo:<big>​IE​-R93.E920</big></code><br/>(oficial vigente - Eircode) ponto na Irlanda.</td>
-     <td><code>geo:.<big>R93.E920</big></code><br/>referência ao mesmo ponto para quem já está na Irlanda.</td>
-     <td>Link para o mapa OSM: por hora impossível, o código (Eircode​) tem patente e não tem serviço de redirecionamento.
-       Serviços de catálogo: para <a href="#">humanos</a>, para <a rel="shortlink" href="#">aplicativos</a>.
-     </td>
-   </tr>
-
-   </table>
-</p>
-</section>
-
-<section id="_status">
-<h3>Países filiados e situação</h3>
-  <table>
-  <tr><th>País <th>Regras estáveis <th>Mapas estáveis <th>Jurisdições definidas</tr>
-  <tr><td><b>BR</b> - Brasil  <td> <a href="./CLP">em discussão</a> (<a rel="external" href="http://bit.ly/CLP-form1" target="_blank">vote</a>)    <td>pendente       <td>645 municípios de 5570 (~12%) </tr>
-  <tr><td><b>CV</b> - Cabo Verde <td> <a rel="external" href="http://www.correios.cv/olc">oficiais</a>, pendente abertura de dados na definição das freguesias <td> pendente      <td> 22 concelhos de 22 (100%) </tr>
-  </table>
-
-  <section id="_agenda">
-  <h4>Agenda das metas de abril</h4>
-  <p>Estamos implementando serviços e redirecionamentos para o <a rel="shortlink" href="http://osm.codes/_foundations/art2.pdf">novo padrão Geo URI</a> (artigo PDF).</p>
-  <p>(em teste) Serviços para a jurisdição <tt><b>BR-SP</b></tt>, Estado de São Paulo: <ul>
-    <li>Latitude e longitude dentro do estado: <a class="wslink" rel="shortlink" href="http://osm.codes/geo:-23,-46.6">osm.codes/geo:-23,-46.6</a></li>
-    <li>Geohash dentro do estado: <a class="wslink" rel="shortlink" href="http://osm.codes/geo:ghs:6gyv5sfz">osm.codes/geo:ghs:6gyv5sfz</a></li>
-    <li>OLC dentro do estado: <a class="wslink" rel="shortlink" href="http://olc.osm.codes/-23,-46.6">olc.osm.codes/-23,-46.6</a></li>
-  </ul>
+  <p>Experimente: &nbsp;&nbsp;<input type="text" size="25" id="build_val" placeholder="geocódigo"/>
+      <select id="build_type">
+        <option value="redir">Mapa com o ponto</option>
+        <option value="cat">Catálogo para humanos</option>
+        <option value="catjson">Catálogo para máquinas (JSON)</option>
+        <option value="catnom">Busca de ponto próximo (Nominatim)</option>
+      </select>
+      &nbsp;
+      <button onclick="go_link()">Ir</button><!-- ou
+      <button onclick="copyToClip('build_val','cpval_buildLink')">Copiar como link <i class="fa fa-copy"></i></button> -->
+      <br/> ou aprenda escolhendo e testando exemplos:
   </p>
-  <p>(em teste) Serviços para a jurisdição <tt><b>CV</b></tt>, Cabo Verde:  <a href="http://osm.codes/_sql/rpc/latlng_to_official?lat=14.85&lng=-24.7">exemplo</a>.</p>
+  <table>
+  <!-- tr><td align="center" colspan="2">Amostra</td></tr -->
+  <tr><td>
 
-  <p> Listagem completa das <a href="http://osm.codes/_sql/kx_osmcodes_prefix?select=prefix,name,osm_rel_id,wd_id">jurisdições
-     previstas para a primeira etapa de implantação</a>.
-  </section>
+  <p id="selStd_rd">Escolha o tipo de geocódigo:<br/>
+    <label><input type="radio" value="of" name="selStd" checked> <b>Oficial</b> (do país)</label>
+    &nbsp;
+    <label><input type="radio" value="co" name="selStd"> <b>Candidato</b> a oficial</label>
+      &nbsp;
+    <label><input type="radio" value="gl" name="selStd"> <b>Global</b> </label>
+  </p>
 
-</section>
+  <p id="gl-opt">Escolha a tecnologia:
+    <select id="selGlob-tec">
+      <option value="ghs" selected="1">Geohash (classic)</option>
+      <option value="ghs-nvu">Geohash NVU (No-Vowels except U)</option>
+      <option value="olc">OLC (Open Location Code)</option>
+      <option value="cep">CEP (sem tecnologia)</option>
+      <!-- option value="s2">S2-geometry</option -->
+    </select> <span id="pub_code2"></span>
+  </p>
 
-<section id="_who">
-<h3>Quem somos</h3>
-<p>O nome domínio <tt>OSM.codes</tt> é uma concessão de baixo custo,
-  podendo ser paga antecipadamente por até 20 anos,
-  e tem um custo baixo de manutenção dos seus serviços, previsível<!-- e planejado--> para um horizonte de 5 anos.
-  Além disso, <b>o direito de propriedade é coletivo</b>: é uma "vaquinha",
-  de custo individual irrisório mas suficiente para que cada um dos co-proprietários,
-  representantes oficiais dos países e de grupos locais,
-  atestem formalmente a sua participação e os seus direitos.
-</p>
-<p>Os contratos de propriedade coletiva (condominial) são os mais estáveis, garantidos por lei e por décadas. Somos, enquanto fundadores, um grupo de membros da Comunidade OpenStreetMap.
-   Formalmente somos um <a rel="help" href="https://wiki.openstreetmap.org/wiki/OSM.codes" target="_blank">Condomínio Voluntário de Patrimônio Digital</a> em construção.</p>
-</section>
+  <p>Escolha um ponto:
+    <select id="selPt">
+      <option value="1">Prefeitura de Praia (PR), Cabo Verde (CV)</option>
+      <option value="2">Aeroporto de Praia (PR), Cabo Verde (CV)</option>
+      <option value="3">Portão do MASP, São Paulo (SP/capital), Brasil (BR)</option>
+      <option value="4">Aeroporto de Congonhas (SP/capital), Brasil (BR)</option>
+      <option value="5">Aeroporto, Altamira (PA), Brasil (BR)</option>
+    </select>
+    <br/>&nbsp; (<code id="geoCoords">geo:?</code> <button title="Copiar como link para o clipboard" onclick="copyToClip('geoCoords','cptxt_buildLink')"><i class="fa fa-copy"></i></button>)
+  </p>
 
-<section id="_how">
-<h3>Como funciona e como participar</h3>
-<p>Todo cidadão pode apoiar o seu país a participar do <tt>OSM.codes</tt>,
-  e todo usuário OSM, empresa ou associação local que o comprovar de forma transparente
-  e contribuir financeiramente para a sua manutenção. </p>
+  <p>Escolha a resolução do ponto:
+  <select id="selRes">
+    <option value="urb">Meio urbano (~3 metros)</option>
+    <option value="rur">Meio rural (~15 metros)</option>
+    <option value="sem">Sem resolução definida</option>
+  </select>
+  </p>
+  <p>Link para o geocódigo:
+    <code><a id="pub_url" rel="shortlink" href="#">?</a></code>
+    <button title="Copiar link para o clipboard" onclick="copyToClip('pub_url','href')"><i class="fa fa-copy"></i></button>
+    <small id="pub_url_ctx"></small>
+  </p>
+</td>
+<td>Geocódigo<br/>escolhido:
+  <br/><code id="pub_code">?</code>
+</td>
+</tr></table>
 
-<p>Em particular os representantes oficiais de um país,
-  para assuntos da Infraestrutura Nacional de Dados Espaciais (INDE),
-  recebem um assento especial nas assembleias e um termo de direito de propriedade sobre o domínio <tt>OSM.codes</tt>,
-  previsto em estatuto por cláusula irrevogável.
-  A manutenção de longo prazo é  garantida junto com os demais representantes institucionais que ajudaram a criar e manter os serviços
-  a jurisdição do país <tt>OSM.codes</tt> (o código ISO do país nos serviços <tt>OSM.codes</tt>).
-</p>
-<p>Para países que ainda não fazem parte do <tt>OSM.codes</tt> terem seus códigos oficiais, este é o passo-a-passo:</p>
-<ol>
-  <li>Consolidar o artigo ISO_3166-2 do seu país na Wikipedia (<a rel="help" href="https://en.wikipedia.org/wiki/ISO_3166-2:CV">exemplo</a>), seus itens na Wikidata e polígonos no OSM. As comunidades Wikidata e OSM podem ajudar, confira os contatos aqui.</li>
-  <li>Submeter o pedido como empresa, ONG ou entidade governamental do seu país: na submissão os dados da Wikidata e OSM serão homologados e submetidos à comunidade. O seu pedido é colocado em consulta pública e  processo iniciado.</li>
-  <li>Um repositório <i>git</i> <code>stable-${isoCode}</code> (por exemplo <a rel="external" href="https://github.com/osm-codes/stable-BR"><code>stable-BR</code></a>)..
-    <li>(se não tem DGG) Processo de escolha da DGG nacional
-      <li> processo de confirmação da DGG e do código oficial...
-</ol>
-</section>
+<section id="AQUI"></section>
+<section id="DETALHES"></section>
+
 </article>
 
 </main>
@@ -227,10 +135,113 @@ if ($msg) echo "<p>$msg</p>";
 
 <footer>
   <p>&nbsp;</p><p>&nbsp;</p>
+  <p align="center"><b>Contato</b>: <a href="https://github.com/osm-codes/spec/issues">github.com/osm-codes/spec/issues</a></p>
   <p>&nbsp;</p><p>&nbsp;</p>
-  <h3>Contatos, etc.</h3>
-  info@osm.codes gitgub/issues etc.
 </footer>
+
+<!-- # # # # # # # # # # # # # # # # # # # # # -->
+<template id="s2res-sem">
+  <p>O geocódigo determina um local, mas geocódigos sem resolução definida, como o CEP,
+     não permitem determinar o local. O CEP apenas contextualiza o município, distrito ou trecho de rua.
+     Na opção "tipo de geocódigo" escolha "candidato a oficial", para entender como seria idealmente
+     o comportamento de um código postal eficiente.
+  </p>
+</template>
+<template id="s2res-else">
+  <p>Isso significa que o número de dígitos do sufixo do geocódigo é suficiente para
+  determinar um ponto que distingue dois portões vizinhos nesta escala.
+  </p>
+  <p>O geocódigo determina um local, mas conforme o tipo de local a precisão de localização
+    será diferente, será preciso "resolver" entre um ponto e seu vizinho.
+    <a href="#" rel="help">No <code>OSM.codes</code> foi convencionado</a> que os locais mais importantes são
+    os <b>portões</b> (em sentido amplo, de portaria, porteira, porta, acesso ou portal).
+    No meio urbano a menor distância entre portões é da ordem de 3 metros, exigindo um geocódigo mais longo.
+    No meio rural (ou ainda nos parques e condomínios do meio urbano) é da ordem de 15 metros,
+    permitindo o uso de um geocódigo mais curto.
+  </p>
+</template>
+
+<template id="s2dets">
+  <h2>Entendendo os demais detalhes...</h2>
+  <p>Você escolheu um geocódigo de resolução "${tr_resolution[resolution]}",
+    <br/><img src="http://osm.codes/assets/geocodeResolution-${resolution}.png" align="center"/>
+  </p>
+  ${resTPL}
+</template>
+
+  <!-- templates opcionais -->
+
+  <template id="s1of-CV">
+    <h2>Entendendo o geocódigo escolhido, <i>oficial de Cabo Verde</i></h2>
+    <p>Em Cabo Verde <a href="https://web.archive.org/web/20170209155133/http://aicep.pt/?/noticias/1/2534">foi adotado oficialmente, a partir de novembro de 2016</a>,
+      um novo tipo de código postal,
+      que corresponde ao sufixo geocódigo OLC contetualizado pelo local (nomes oficiais de bairro e de município).
+      O OLC completo (global) também é aceito. Exemplos de endereçamento postal válido:
+      <br/>&nbsp; Código global – 796RWF8Q+WF
+      <br/>&nbsp; Código Local – WF8Q+WF Praia, Cabo Verde
+    </p>
+    <p>
+      Transpondo para as <a rel="help" href="http://osm.codes/_foundations/art2.pdf">convenções <tt>OSM.codes</tt></a>,
+      a contextualização local é convertida para uma sigla <a rel="external" href="https://en.wikipedia.org/wiki/ISO_3166-2:CV">padrão ​ISO&nbsp;3166-2</a>, aceita mundialmente e fácil de lembrar.
+      No exemplo "Cabo Verde, Paria" é convertido
+      para a sigla "CV-PR", resultando num código de 10 a 13 caracteres, <code class="osmcode"><span>CV-PR</span>-WF8Q+WF</code>.
+      A contextualização se torna parte do código, que resulta ser mais fácil de  lembrar do que o código global.
+    </p>
+  </template>
+
+  <template id="s1of-BR">
+    <h2>Entendendo o geocódigo escolhido, <i>geocódigo oficial do Brasil</i></h2>
+    <p>O Brasil, apesar de ter uma <a href="https://www.inde.gov.br/Inde/Apresentacao">INDE (Infraestrutura Nacional de Dados Espaciais)</a>,
+      não elegeu a sua <a href="https://en.wikipedia.org/wiki/Discrete_global_grid">grade nacional</a>.
+      A única grade hierarquica padronizada para todo o território nacional é o CEP, ou seja, o código postal brasileiro.
+    </p>
+  </template>
+
+  <template id="s1co-BR">
+    <h2>Entendendo o <i>candidato a geocódigo do Brasil</i></h2>
+    <p>A <a rel="help" href="http://osm.codes/CLP/">proposta de Código Localizador de Portão</a> (CLP)
+      iniciou como estudos de viabilidade e consulta pública sobre o assunto em 2018,
+      tendo evoluido para testes-piloto e se integrado à iniciativa do <tt>OSM.codes</tt> em 2019.
+    </p>
+    <p>Durante a fase de triagem técnica foram selecionadas duas tecnologias,
+      o Geohash-NVU e uma adaptação da tecnologia <a href="http://s2geometry.io/">S2 Geometry</a>,
+        para representar também em base32-nvu.
+   </p>
+   <p>A proposta é de fomentar um grade de referência para a INDE e eventualmente <a rel="help" href="http://osm.codes/_foundations/BR-CEP-manifesto2019.pdf">substituir o CEP caso a agência de Correios venha ser privatizada</a>.</p>
+  </template>
+
+  <template id="s1ghs">
+    <h2>Entendendo o <i>Geohash global</i></h2>
+    <p>O <a href="https://en.wikipedia.org/wiki/Geohash">Geohash</a> foi proposto em 2010
+      e se manteve desde então o principal geocódigo de licença livre.
+      O <i>valor Geohash</i> pode ser expresso em binário, e, para ser expresso como geocódigo padronizado,
+      foi convencionado o uso da base32 com um albeto próprio (0-9 e letras minúsculas de "b" até "y" sem "i", "l" nem "o").
+    </p>
+    <p>O geocódigo Geohash é matematicamente o entrelaçamento entre os dígitos binários das coordenadas de latitude e longitude,
+      de modo que a sua representação espacial forma uma hierarquia de células grandes até o tamanho de célula que se queira.
+      Por isso Geohashes com mesmo prefixo correspondem a pontos dentro de uma mesma localidade, dada pelo Geohash do prefixo.
+    </p>
+  </template>
+
+  <template id="s1ghs-nvu">
+    <h2>Entendendo o <i>Geohash-NVU global</i></h2>
+    <p>Baseado no <a href="https://en.wikipedia.org/wiki/Geohash">Geohash</a>, difere apenas na
+      representação final, onde o alfabeto de letras minúsculas foi trocado por um alfabeto
+      de letras maiúsculas sem as vogais, exceto o "U" (daí a sigla NVU - do inglês "No-Vowels except U").
+    </p>
+    <p>O alfabeto NVU é interessante para geocódigos em países de língua latina, principalmente Português e Espanhol,
+      onde a maior parte das palavras do dicionário requer vogal, e o uso da vogal "u" é menos frequente.
+      Isso evita confusão entre o geocódigo e palavras comuns.
+  </template>
+
+  <template id="s1olc">
+    <h2>Entendendo o <i>OLC global</i></h2>
+    <p>O <a href="https://en.wikipedia.org/wiki/Open_Location_Code">padrão de geocódigo OLC</a>  (do inglês "​Open Location Code​") surgiu em 2014,
+      sendo logo em seguida adotado pela Google no seu site <tt>Plus.codes</tt>.
+      Em 2016 foi adotado pelos Correios de Cabo Verde.
+    </p>
+  </template>
+</template>
 
 </body>
 </html>

@@ -35,7 +35,24 @@ nav.top .menuIcon {
   display: none;
 }
 
+#fig1-DivingBoard {
+  background-color: #fff;
+  background-repeat: no-repeat;
+}
+
+@media screen and (min-width: 601px) {
+  #fig1-DivingBoard {
+    width: 322px;
+    background-image: url("http://osm.codes/assets/ref01-freeDiving-Board4.320px.jpeg");
+  }
+}
+
 @media screen and (max-width: 600px) {
+  #fig1-DivingBoard {
+    width: 242px;
+    background-image: url("http://osm.codes/assets/ref01-freeDiving-Board4.240px.jpeg");
+  }
+
   nav.top a:not(:first-child) {
     display: none;
   }
@@ -92,13 +109,34 @@ article > section > section h4 {
  * ETC.
  */
 
+code.osmcode span {
+  color: #756;
+  font-weight: bold;
+}
 main header h1 {
   color: #666;
   font-size: calc(12px + 1vw);
   padding: 12pt;
   text-align:center;
 }
+main h2 {
+  color: #444;
+  font-size: calc(11px + 0.8vw);
+}
 
 footer {background-color: #f5f5f5;}
 
 .wslink {font-family: monospace}
+
+#pub_code {
+  font-weight: bold;
+  font-size: calc(11px + 0.6vw);
+}
+
+#selStd_rd label {
+  color:#034;
+  background-color: #EFF;
+  padding-top:4pt;
+  padding-right:4pt;
+  margin: 2pt;
+}
