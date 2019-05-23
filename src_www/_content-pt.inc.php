@@ -9,29 +9,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- link rel="manifest" href="manifest.json" -->
 
+<link rel="stylesheet" href="assets/jquery.wizzy.css">
 <link rel="stylesheet" href="assets/main.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <script src="assets/demo_home.js"></script>
 <script>
-$(document).ready(function(){ // ONLOAD
-    $('nav .menuIcon').click(function () {
-        let x = document.getElementById('topnav1');
-        x.className = (x.className === 'top')? 'top responsive': 'top'
-    })
-    $('#chg_lang').click(function () {
-      if ( confirm("Mudando língua para inglês, confirme!\n\nChanging language to English, confirm!") )
-       location.href="index.php?lang=en"
-      //$(this).text('['+newLang+']').prop('title','nov tit')
-    })
-    setPt();
-    $('#selStd_rd input, #selGlob-tec, #selPt, #selRes').change( function () {setPt();} );
-}); // ONLOAD
+var setPt_selPAIS; // global
+function ONLOAD() {
+  setPt_selPAIS = $(".wz-step label:has(>input[name='selPAIS'])"); // init
+  //let xx = $('#selStd_rd input, #selGlob-tec, #selPt, #selRes').toArray();console.log( "ini0:", xx )
+  $('nav .menuIcon').click( ()=> {
+      let x = document.getElementById('topnav1');
+      x.className = (x.className === 'top')? 'top responsive': 'top'
+  })
+  $('#chg_lang').click( ()=> {
+    if ( confirm("Mudando língua para inglês, confirme!\n\nChanging language to English, confirm!") )
+     location.href="index.php?lang=en"
+    //$(this).text('['+newLang+']').prop('title','nov tit')
+  })
+
+  // erro, multiplicou $('#selStd_rd input, #selGlob-tec, #selRes').each( ()=> {   $(this).change( ()=>setPt() );  });
+
+  showPAIS('CV');
+  $(".wizzy").wizzy();
+  //setPt();
+
+} // ONLOAD
 </script>
 </head>
 
-<body>
+<body onload="ONLOAD()">
 <nav class="top" id="topnav1">
   <!-- current top menu -->
   <a href="index.php" class="home"><tt>OSM.codes</tt></a>
@@ -53,7 +62,6 @@ $(document).ready(function(){ // ONLOAD
 <?php
 if ($msg) echo "<p>$msg</p>";
 ?>
-
 <main lang="pt-BR" id="_top">
 
 <header>
@@ -61,8 +69,9 @@ if ($msg) echo "<p>$msg</p>";
     oficiais e de uso geral
   </h1>
 </header>
+
 <article>
-  <p>Experimente: &nbsp;&nbsp;<input type="text" size="25" id="build_val" placeholder="geocódigo"/>
+  <p style="display:none">Experimente: &nbsp;&nbsp;<input type="text" size="25" id="build_val" placeholder="geocódigo"/>
       <select id="build_type">
         <option value="redir">Mapa com o ponto</option>
         <option value="cat">Catálogo para humanos</option>
@@ -74,56 +83,80 @@ if ($msg) echo "<p>$msg</p>";
       <button onclick="copyToClip('build_val','cpval_buildLink')">Copiar como link <i class="fa fa-copy"></i></button> -->
       <br/> ou aprenda escolhendo e testando exemplos:
   </p>
-  <table>
-  <!-- tr><td align="center" colspan="2">Amostra</td></tr -->
-  <tr><td>
 
-  <p id="selStd_rd">Escolha o tipo de geocódigo:<br/>
-    <label><input type="radio" value="of" name="selStd" checked> <b>Oficial</b> (do país)</label>
-    &nbsp;
-    <label><input type="radio" value="co" name="selStd"> <b>Candidato</b> a oficial</label>
-      &nbsp;
-    <label><input type="radio" value="gl" name="selStd"> <b>Global</b> </label>
-  </p>
+  <aside class="wz-wrapper wizzy"><!-- Start Wizzy -->
+      <div class="wz-inner">
+          <div class="wz-header">
+              <nav></nav>
+          </div>
+          <section class="wz-body"><!-- get template or use here -->
 
-  <p id="gl-opt">Escolha a tecnologia:
-    <select id="selGlob-tec">
-      <option value="ghs" selected="1">Geohash (classic)</option>
-      <option value="ghs-nvu">Geohash NVU (No-Vowels except U)</option>
-      <option value="olc">OLC (Open Location Code)</option>
-      <option value="cep">CEP (sem tecnologia)</option>
-      <!-- option value="s2">S2-geometry</option -->
-    </select> <span id="pub_code2"></span>
-  </p>
+            <div class="wz-step" lang="en" data-short-title="Ponto">
+              <p>Escolha um ponto:<br/>
+                  <label><input onchange="showPAIS(this.value)" type="radio" value="BR" name="selPAIS"/>Brasil (BR)</label>
+                  &nbsp;
+                  <label><input onchange="showPAIS(this.value)" type="radio" value="CV" name="selPAIS" checked="1"/>Cabo Verde (CV)</label>
+                <br/>
+                <select id="selPt-BR" onchange="setPt(1)">
+                  <option value="3">Portão do MASP, São Paulo (SP/capital), BR</option>
+                  <option value="4">Aeroporto de Congonhas (SP/capital), BR</option>
+                  <option value="5">Aeroporto, Altamira (PA), BR</option>
+                </select>
+                <select id="selPt-CV" onchange="setPt(2)">
+                  <option value="1">Prefeitura de Praia (PR), CV</option>
+                  <option value="2">Aeroporto de Praia (PR), CV</option>
+                </select>
+                <br/>&nbsp; (<code id="geoCoords">geo:?</code> <button title="Copiar como link para o clipboard" onclick="copyToClip('geoCoords','cptxt_buildLink')"><i class="fa fa-copy"></i></button>)
+              </p>
+            </div>
 
-  <p>Escolha um ponto:
-    <select id="selPt">
-      <option value="1">Prefeitura de Praia (PR), Cabo Verde (CV)</option>
-      <option value="2">Aeroporto de Praia (PR), Cabo Verde (CV)</option>
-      <option value="3">Portão do MASP, São Paulo (SP/capital), Brasil (BR)</option>
-      <option value="4">Aeroporto de Congonhas (SP/capital), Brasil (BR)</option>
-      <option value="5">Aeroporto, Altamira (PA), Brasil (BR)</option>
-    </select>
-    <br/>&nbsp; (<code id="geoCoords">geo:?</code> <button title="Copiar como link para o clipboard" onclick="copyToClip('geoCoords','cptxt_buildLink')"><i class="fa fa-copy"></i></button>)
-  </p>
+            <div class="wz-step" lang="en" data-short-title="Geocódigo">
+              <p id="selStd_rd">Escolha o tipo de geocódigo:<br/>
+                <label><input onchange="setPt(3)" type="radio" value="of" name="selStd" checked="1"/> <b>Oficial</b> (do país)</label>
+                &nbsp;
+                <label><input onchange="setPt(4)" type="radio" value="co" name="selStd"/> <b>Candidato</b> a oficial</label>
+                  &nbsp;
+                <label><input onchange="setPt(5)" type="radio" value="gl" name="selStd"/> <b>Global</b> </label>
+              </p>
+            </div>
 
-  <p>Escolha a resolução do ponto:
-  <select id="selRes">
-    <option value="urb">Meio urbano (~3 metros)</option>
-    <option value="rur">Meio rural (~15 metros)</option>
-    <option value="sem">Sem resolução definida</option>
-  </select>
-  </p>
-  <p>Link para o geocódigo:
-    <code><a id="pub_url" rel="shortlink" href="#">?</a></code>
-    <button title="Copiar link para o clipboard" onclick="copyToClip('pub_url','href')"><i class="fa fa-copy"></i></button>
-    <small id="pub_url_ctx"></small>
-  </p>
-</td>
-<td>Geocódigo<br/>escolhido:
-  <br/><code id="pub_code">?</code>
-</td>
-</tr></table>
+
+            <div class="wz-step" lang="en" data-short-title="Tecnologia">
+              <p id="gl-opt">Escolha a tecnologia:
+                <select onchange="setPt(6)" id="selGlob-tec">
+                  <option value="ghs" selected="1">Geohash (classic)</option>
+                  <option value="ghs-nvu">Geohash NVU (No-Vowels except U)</option>
+                  <option value="olc">OLC (Open Location Code)</option>
+                  <option value="cep">CEP (sem tecnologia)</option>
+                  <!-- option value="s2">S2-geometry</option -->
+                </select> <span id="pub_code2"></span>
+              </p>
+            </div>
+
+            <div class="wz-step" lang="en" data-short-title="Resolução">
+              <p>Escolha a resolução do ponto:
+              <select onchange="setPt(7)" id="selRes">
+                <option value="urb">Meio urbano (~3 metros)</option>
+                <option value="rur">Meio rural (~15 metros)</option>
+                <option value="sem">Sem resolução definida</option>
+              </select>
+              </p>
+
+              <p>Link para o geocódigo:
+                <code><a id="pub_url" rel="shortlink" href="#">?</a></code>
+                <button title="Copiar link para o clipboard" onclick="copyToClip('pub_url','href')"><i class="fa fa-copy"></i></button>
+                <small id="pub_url_ctx"></small>
+              </p>
+
+            </div>
+          </section>
+          <div class="wz-navigator"></div>
+      </div>
+
+      <p>Geocódigo escolhido: <code id="pub_code">?</code></p>
+
+  </aside><!-- End Wizzy -->
+  <br/>&nbsp;<br/>
 
 <section id="AQUI"></section>
 <section id="DETALHES"></section>
@@ -242,6 +275,8 @@ if ($msg) echo "<p>$msg</p>";
     </p>
   </template>
 </template>
+
+<script src="assets/jquery.wizzy.js"></script>
 
 </body>
 </html>

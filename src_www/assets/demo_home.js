@@ -1,11 +1,11 @@
 
 // CONFIG SAMPLE SET:
 const coordinates = [
-  "14.9171875,-23.5093125", // prefeitura CV
-  "14.944268,-23.487588", // aeroporto CV
-  "-23.561618,-46.655996", // MASP BR-SP-SP, cep 01310-200
-  "-23.625098,-46.661315",  // Congonhas
-  "-3.253526,-52.249368"  // aeroporto Altamira BR-PA-ALT
+  ["14.9171875,-23.5093125",'CV'], // prefeitura CV
+  ["14.944268,-23.487588",'CV'], // aeroporto CV
+  ["-23.561618,-46.655996",'BR'], // MASP BR-SP-SP, cep 01310-200
+  ["-23.625098,-46.661315",'BR'],  // Congonhas
+  ["-3.253526,-52.249368",'BR']  // aeroporto Altamira BR-PA-ALT
 ];
 const tr_oficialTech = {"of-CV":"olc", "of-BR":"cep", "co-BR":"ghs-nvu"};
 const tr_oficialTech2 = {"of-CV":"OLC", "of-BR":"CEP", "co-BR":"Geohash NVU"};
@@ -69,19 +69,34 @@ const geocodes = {
   "p5gl-olc~rur": "olc:6889PQW2+H"
 };
 
-function setPt() {
-  let pt = $('#selPt').val();
+
+function setPt(deOnde_debug) {
+  // outra opcao no lugar de checkbox é apenas marcar o texto
+  let spp_ickd  = setPt_selPAIS.find("input:checked");
+  //simulating CSS label:has(> input[name="selPAIS"]:checked) {font-weight: bold;}
+    setPt_selPAIS.css('font-weight','normal'); // ok
+    // revisar melhor maneira de marcar bold! reuso de spp_ickd muito complexo... ideal pure JS query
+    let spp0 = setPt_selPAIS.first();
+    if ((spp0.find("input").is(spp_ickd))) spp0.css('font-weight','bold');
+    else setPt_selPAIS.eq(1).css('font-weight','bold');
+  let supposedCountry = spp_ickd.val();
+  let pt = (supposedCountry=='BR')? $('#selPt-BR').val(): $('#selPt-CV').val();
+  if (!pt) alert("ERROR1: bug, no point detected.")
   let pt_idx = Number(pt)-1;
 
-  let c = coordinates[pt_idx];
+  let c = coordinates[pt_idx][0];
+  let country = coordinates[pt_idx][1];
+  if (supposedCountry!=country) alert("ERROR2: bug country")
+  //console.log(`debug2 (onde=${deOnde_debug}) pt=${pt}, country=${country}, pt_idx=${pt_idx}, aux0-visible=`,aux0.is(":visible"))
+
   if (c) $('#geoCoords').text('geo:'+c);
-  else console.log("ERROR2 on pt="+pt);
+  else console.log("ERROR3: no coordinates on pt="+pt);
 
   let std = $('#selStd_rd input:checked').val();
-  if (pt_idx<2 && std=='co') {
+  if (country=='CV' && std=='co') {
     std='of';
     $("#selStd_rd input[value='of']").prop("checked",true);
-    alert("Neste país não há 'geocódigo candidato' em discussão,\n usando o oficial.");
+    if (wizzy.step>0) alert("Neste país ("+country+")\nnão há 'geocódigo candidato' em discussão,\n usando o oficial.");
   }
   let std0=std;
   let glTec = ''
@@ -90,7 +105,7 @@ function setPt() {
     $('#selGlob-tec').prop('disabled',false);
     glTec = $('#selGlob-tec').val()
     if (glTec=='cep'){
-      alert("CEP não é global")
+      if (wizzy.step>1) alert("CEP não é global")
       glTec ='ghs-nvu'; $('#selGlob-tec').val(glTec)
     }
     std += '-' + glTec
@@ -98,15 +113,16 @@ function setPt() {
    //else   $('#gl-opt').hide();
 
   let resolution = $('#selRes').val()
-  //console.log("debug:",pt_idx,std0, glTec,resolution,)
-  if ((pt_idx<2 || std!='of') && resolution=='sem') {
+  if ((country=='CV' || std!='of') && resolution=='sem') {
     resolution='rur'
     $('#selRes').val(resolution);
-    alert("Com este tipo de geocódigo\na resolução ('rural' ou 'urbana')\nprecisa ser escolhida.");
-  } else if (pt_idx>1 && std=='of' && resolution!='sem') {
+    if (wizzy.step>1)
+      alert("Com este tipo de geocódigo\na resolução ('rural' ou 'urbana')\nprecisa ser escolhida.");
+  } else if (country=='BR' && std=='of' && resolution!='sem') {
     resolution='sem'
     $('#selRes').val(resolution);
-    alert("O padrão CEP é grosseiro, não tem resolução definida.");
+    if (wizzy.step>1)
+      alert("O padrão CEP é grosseiro, não tem resolução definida.");
   }
 
   let k = 'p'+pt+ std+'~'+resolution;
@@ -147,6 +163,8 @@ function setPt() {
     $('#pub_url_ctx').html('');
     alert("ERROR: \ngeocode "+k+" not found.")
   }
+  //console.log("debug9: pt=",pt,aux0.is(":visible"),"country="+country,pt_idx)
+
 }
 
 /////////////
@@ -187,4 +205,15 @@ function go_link(){
   if (gt=='redir')
     window.location.href = 'http://osm.codes/'+gc
   else alert("under construction")
+}
+
+function showPAIS(pais) {
+  //[type='checkbox']...
+  $(".wz-step input[value='"+pais+"']").prop('checked', true);
+  if (pais=='BR'){
+    $('#selPt-BR').show(); $('#selPt-CV').hide();
+  } else {
+    $('#selPt-BR').hide(); $('#selPt-CV').show();
+  }
+  setPt(100) // muda ponto
 }
