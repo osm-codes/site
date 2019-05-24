@@ -35,7 +35,7 @@ License: MIT
   flex-direction: column;
   width: 600px;
   min-height: 280px; /* changed from original */
-  background: #dfc;
+  background: #d9d9d9;
   box-shadow: 0px 50px 50px -30px rgba(0, 0, 0, 0.4);
   transition-duration: 0.4s;
   border-radius: 3px;
@@ -73,7 +73,7 @@ License: MIT
   flex-direction: row;
   border-radius: 3px;
   overflow: hidden;
-  background: #ecf0f1;
+  background: #f0ecf1;
   position: relative;
 }
 .wz-wrapper .wz-inner .wz-header nav a {
@@ -83,7 +83,7 @@ License: MIT
   line-height: 40px;
   text-decoration: none;
   text-transform: uppercase;
-  color: #ffda44;
+  color: #000000;
   font-size: 12px;
   position: relative;
   height: 40px;
@@ -93,7 +93,7 @@ License: MIT
   color: #dfc;
 }
 .wz-wrapper .wz-inner .wz-header nav a.completed {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgb(255, 255, 255);
 }
 .wz-wrapper .wz-inner .wz-header nav a span {
   position: relative;
@@ -105,7 +105,7 @@ License: MIT
   top: 0;
   height: 100%;
   width: 0px;
-  background: #3498db;
+  background: #FF6600;
   transition-duration: 0.4s;
   transition-timing-function: cubic-bezier(0.455, 0.03, 0.515, 0.955);
 }
@@ -148,12 +148,19 @@ License: MIT
 .wz-wrapper .wz-inner .wz-navigator .btn.left {
   float: left;
 }
+.wz-wrapper .wz-inner .wz-navigator .btn.btn-default {
+  background: #ffa366;
+  color: #dfc;
+}
+.wz-wrapper .wz-inner .wz-navigator .btn.btn-default:hover {
+  background: #ffd1b3;
+}
 .wz-wrapper .wz-inner .wz-navigator .btn.btn-primary {
-  background: #3498db;
+  background: #FF6600;
   color: #dfc;
 }
 .wz-wrapper .wz-inner .wz-navigator .btn.btn-primary:hover {
-  background: #5faee3;
+  background: #ffa366;
 }
 .wz-wrapper .wz-inner .wz-navigator .btn.btn-secondary {
   background: #9b59b6;
@@ -184,11 +191,11 @@ License: MIT
   background: #ed7669;
 }
 .wz-wrapper .wz-inner .wz-navigator .btn.btn-success {
-  background: #2ecc71;
+  background: #009933;
   color: #dfc;
 }
 .wz-wrapper .wz-inner .wz-navigator .btn.btn-success:hover {
-  background: #54d98c;
+  background: #00cc44;
 }
 .wz-wrapper .wz-inner .wz-navigator .btn.btn-dark {
   background: #34495e;
@@ -265,4 +272,14 @@ old (min-width: 320px) and
     height: 30px;
     line-height: 30px;
   }
+}
+
+.geocode_background{
+  text-align: center;
+  background-color: #404040;
+  color: white;
+}
+
+.button_copy{
+  background-color: #f2f2f2;
 }

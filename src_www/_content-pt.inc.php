@@ -106,7 +106,7 @@ if ($msg) echo "<p>$msg</p>";
                   <option value="1">Prefeitura de Praia (PR), CV</option>
                   <option value="2">Aeroporto de Praia (PR), CV</option>
                 </select>
-                <br/>&nbsp; (<code id="geoCoords">geo:?</code> <button title="Copiar como link para o clipboard" onclick="copyToClip('geoCoords','cptxt_buildLink')"><i class="fa fa-copy"></i></button>)
+                <br/> (<code id="geoCoords">geo:?</code>) <button title="Copiar como link para o clipboard" onclick="copyToClip('geoCoords','cptxt_buildLink')"  class="button_copy"><i class="far fa-copy"> Copiar</i></button>
               </p>
             </div>
 
@@ -131,6 +131,7 @@ if ($msg) echo "<p>$msg</p>";
                   <!-- option value="s2">S2-geometry</option -->
                 </select> <span id="pub_code2"></span>
               </p>
+              <h5>(Opções disponíveis apenas ao escolher a opção <i>candidato a oficial</i> ou <i>global</i> no passo 2)</h5>
             </div>
 
             <div class="wz-step" lang="en" data-short-title="Resolução">
@@ -144,7 +145,7 @@ if ($msg) echo "<p>$msg</p>";
 
               <p>Link para o geocódigo:
                 <code><a id="pub_url" rel="shortlink" href="#">?</a></code>
-                <button title="Copiar link para o clipboard" onclick="copyToClip('pub_url','href')"><i class="fa fa-copy"></i></button>
+                <button title="Copiar link para o clipboard" onclick="copyToClip('pub_url','href')" class="button_copy"><i class="fa fa-copy"></i> Copiar</button>
                 <small id="pub_url_ctx"></small>
               </p>
 
