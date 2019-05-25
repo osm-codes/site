@@ -106,7 +106,7 @@ if ($msg) echo "<p>$msg</p>";
                   <option value="1">Prefeitura de Praia (PR), CV</option>
                   <option value="2">Aeroporto de Praia (PR), CV</option>
                 </select>
-                <br/> (<code id="geoCoords">geo:?</code>) <button title="Copiar como link para o clipboard" onclick="copyToClip('geoCoords','cptxt_buildLink')"  class="button_copy"><i class="far fa-copy"> Copiar</i></button>
+                <br/> (<code id="geoCoords">geo:?</code>) <button title="Copiar como link para o clipboard" onclick="copyToClip('geoCoords','cptxt_buildLink')"  class="button_copy"><i class="fa fa-copy"></i> Copiar</button>
               </p>
             </div>
 
@@ -154,7 +154,7 @@ if ($msg) echo "<p>$msg</p>";
           <div class="wz-navigator"></div>
       </div>
 
-      <p>Geocódigo escolhido: <code id="pub_code">?</code></p>
+      <p class="geocode_background">Geocódigo escolhido: <code id="pub_code">?</code></p>
 
   </aside><!-- End Wizzy -->
   <br/>&nbsp;<br/>
