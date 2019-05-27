@@ -120,7 +120,6 @@ if ($msg) echo "<p>$msg</p>";
               </p>
             </div>
 
-
             <div class="wz-step" lang="en" data-short-title="Tecnologia">
               <p id="gl-opt">Escolha a tecnologia:
                 <select onchange="setPt(6)" id="selGlob-tec">
@@ -131,7 +130,7 @@ if ($msg) echo "<p>$msg</p>";
                   <!-- option value="s2">S2-geometry</option -->
                 </select> <span id="pub_code2"></span>
               </p>
-              <h5>(Opções disponíveis apenas ao escolher a opção <i>candidato a oficial</i> ou <i>global</i> no passo 2)</h5>
+              <p id="selGlob-tec-msg"></p>
             </div>
 
             <div class="wz-step" lang="en" data-short-title="Resolução">

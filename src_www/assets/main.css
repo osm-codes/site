@@ -27,7 +27,7 @@ nav.top a:hover {
   color: black;
 }
 nav.top a.home {
-  background-color: #4CAF50;
+  background-color: #ffa600; /* old #4CAF50 */
   color: white;
 }
 
@@ -84,7 +84,7 @@ article a[rel="external"] { color:#000099 }
 article a[rel="help"] { color:green }
 article a:hover { background-color: #ECA; color:blue; }
 article a[rel="external"]:hover { background-color:#FB9; color:#222; }
-article a[rel="help"]:hover { background-color:#DFB; color:#222; }
+article a[rel="help"]:hover { background-color:#ffd87a; color:#222; }
 
 article table {
  border-collapse: collapse;
@@ -96,7 +96,7 @@ article table, article th, article td {
 article > section > h1,
 article > section > h2,
 article > section > h3 {
-  background-color: #DFB;
+  background-color: #ffd87a;
   padding: 3pt;
 }
 article > section > section h3,

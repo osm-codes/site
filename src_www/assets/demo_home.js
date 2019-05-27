@@ -103,13 +103,20 @@ function setPt(deOnde_debug) {
   if (std0=='gl') {
     //$('#gl-opt').show()
     $('#selGlob-tec').prop('disabled',false);
+    $('#selGlob-tec-msg').html('')
     glTec = $('#selGlob-tec').val()
     if (glTec=='cep'){
       if (wizzy.step>1) alert("CEP não é global")
       glTec ='ghs-nvu'; $('#selGlob-tec').val(glTec)
     }
     std += '-' + glTec
-  } else $('#selGlob-tec').prop('disabled',std0=='of');
+  } else {
+    if (std0=='of') {
+      $('#selGlob-tec-msg').html('(opções disponíveis apenas ao escolher outra opção no passo 2)')
+      $('#selGlob-tec').prop('disabled',true);
+    } else
+      $('#selGlob-tec').prop('disabled',false);
+  }
    //else   $('#gl-opt').hide();
 
   let resolution = $('#selRes').val()
