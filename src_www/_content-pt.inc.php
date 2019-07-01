@@ -5,7 +5,6 @@
 
 <title>OSM.codes</title>
 <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- link rel="manifest" href="manifest.json" -->
 
@@ -197,7 +196,7 @@ if ($msg) echo "<p>$msg</p>";
 <template id="s2dets">
   <h2>Entendendo os demais detalhes...</h2>
   <p>Você escolheu um geocódigo de resolução "${tr_resolution[resolution]}",
-    <br/><img src="http://osm.codes/assets/geocodeResolution-${resolution}.png" align="center"/>
+    <br/><img src="/assets/geocodeResolution-${resolution}.png" align="center"/>
   </p>
   ${resTPL}
 </template>
@@ -214,7 +213,7 @@ if ($msg) echo "<p>$msg</p>";
       <br/>&nbsp; Código Local – WF8Q+WF Praia, Cabo Verde
     </p>
     <p>
-      Transpondo para as <a rel="help" href="http://osm.codes/_foundations/art2.pdf">convenções <tt>OSM.codes</tt></a>,
+      Transpondo para as <a rel="help" href="/_foundations/art2.pdf">convenções <tt>OSM.codes</tt></a>,
       a contextualização local é convertida para uma sigla <a rel="external" href="https://en.wikipedia.org/wiki/ISO_3166-2:CV">padrão ​ISO&nbsp;3166-2</a>, aceita mundialmente e fácil de lembrar.
       No exemplo "Cabo Verde, Paria" é convertido
       para a sigla "CV-PR", resultando num código de 10 a 13 caracteres, <code class="osmcode"><span>CV-PR</span>-WF8Q+WF</code>.
@@ -232,15 +231,38 @@ if ($msg) echo "<p>$msg</p>";
 
   <template id="s1co-BR">
     <h2>Entendendo o <i>candidato a geocódigo do Brasil</i></h2>
-    <p>A <a rel="help" href="http://osm.codes/CLP/">proposta de Código Localizador de Portão</a> (CLP)
+    <p>A <a rel="help" href="/CLP/">proposta de Código Localizador de Portão</a> (CLP)
       iniciou como estudos de viabilidade e consulta pública sobre o assunto em 2018,
       tendo evoluido para testes-piloto e se integrado à iniciativa do <tt>OSM.codes</tt> em 2019.
+      O Brasil tem geocódigo oficial, o CEP, a proposta é justamente por um "Novo CEP".
     </p>
     <p>Durante a fase de triagem técnica foram selecionadas duas tecnologias,
-      o Geohash-NVU e uma adaptação da tecnologia <a href="http://s2geometry.io/">S2 Geometry</a>,
+      o <b>Geohash-NVU</b> (o escolhido para este teste) e uma adaptação da tecnologia
+      <a href="https://s2geometry.io/" rel="external">S2 Geometry</a>,
         para representar também em base32-nvu.
-   </p>
-   <p>A proposta é de fomentar um grade de referência para a INDE e eventualmente <a rel="help" href="http://osm.codes/_foundations/BR-CEP-manifesto2019.pdf">substituir o CEP caso a agência de Correios venha ser privatizada</a>.</p>
+    </p>
+    <p>A proposta é de fomentar um grade de referência para a INDE e eventualmente
+      <a rel="help" href="/_foundations/BR-CEP-manifesto2019.pdf">substituir o CEP caso a agência de Correios venha ser privatizada</a>.</p>
+
+    <h2>Prefixo e sufixo desse geocódigo</h2>
+    <p>O prefixo é uma extensão do código ISO de duas letras,
+    que consiste no código de unidade da federação (<a href="https://en.wikipedia.org/wiki/ISO_3166-2:BR" target="_blank" rel="eternal">mais duas letras ISO&nbsp;3166-2:BR</a>)
+    e no código do município (três letras do padrão DER do estado).
+    </p>
+    <p align="center"><img style="width: 75%; height: auto;" src="/CLP/assets/siglas-hierarquia2.jpg"/>   </p>
+    <p>Esse  prefixo amigável e mnemônico, que funciona como uma abreviação do nome do lugar,
+      é associado a um geocódigo global grosseiro, quase do tamanho do município.
+      Essa associação permite traduzir o nome em geocódigo.
+    </p>
+    <p>Por fim, o <b>sufixo</b> desse <i>candidato a geocódigo do Brasil</i> é um fragmento de <i>geocódigo global</i>,
+      ou seja, do Geohash-NVU.
+      O prefixo traduzido e o sufixo, concatenados formam o   Geohash-NVU global completo:
+    </p>
+    <p align="center"> geocódigo &nbsp;=&nbsp; tradução(geocódigo_oficial)
+                       &nbsp;=&nbsp; tradução(prefixo + sufixo)
+                       &nbsp;=&nbsp; tradução(prefixo) + sufixo
+    </p>
+    <p>O tamanho do sufixo vai depender da resolução escolhida.</p>
   </template>
 
   <template id="s1ghs">

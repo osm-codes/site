@@ -4,6 +4,9 @@
 # test http://OSM.codes
 ##
 
+# set ports at /etc/nginx/nginx.conf http directive, e.g.
+#   map $host $myPort { default 1234; }
+
 server { ## OSM.CODES
         server_name osm.codes www.osm.codes;
         access_log /var/log/nginx/osm.codes.access_log;
@@ -13,19 +16,19 @@ server { ## OSM.CODES
         add_header X-Frame-Options SAMEORIGIN; #iframe
 
         location /_sql {
-          rewrite ^/_sql/(.*) /$1 break;
-          proxy_pass http://127.0.0.1:3001;
+          rewrite     ^/_sql/(.*)   /$1   break;
+          proxy_pass http://127.0.0.1:$SQL1port;
         }
 
         location /_doc {
-          rewrite ^/_doc/(.*) /$1 break;
-          proxy_pass http://127.0.0.1:5001;
+          rewrite    ^/_doc/(.*)    /$1   break;
+          proxy_pass http://127.0.0.1:$MKDOC1port;
         }
 
         location /geo: {
 
-##    if ($http_Accept ~ "text/html") {          rewrite "^.+$"         /
-##                  break;          proxy_pass http://127.0.0.1:3001; }
+      ##    if ($http_Accept ~ "text/html") {          rewrite "^.+$"         /
+      ##                  break;          proxy_pass http://127.0.0.1:$SQL1port; }
 
           rewrite "^/?geo:(\-?\d+\.?\d*),(\-?\d+\.?\d*)$"
                   /rpc/latlng_to_city?lat=$1&lng=$2
@@ -33,31 +36,31 @@ server { ## OSM.CODES
           rewrite "^/?geo:ghs(?:\-std|\-b32ghs)?:([^,]+)$"
                   /rpc/geohash_to_city?code=$1
                   break;
-          proxy_pass http://127.0.0.1:3001;
+          proxy_pass http://127.0.0.1:$SQL1port;
         }
 
         location /_latlng2olc {
           rewrite "^/?_latlng2olc/(\-?\d+\.?\d*),(\-?\d+\.?\d*)$"
             /rpc/latlng_to_olc_city?lat=$1&lng=$2
             break;
-          proxy_pass http://127.0.0.1:3001;
+          proxy_pass http://127.0.0.1:$SQL1port;
         }
 
         location @resolver {
-          rewrite "^/?([^/]+?)(\.[a-zA-z]+)?$"
+          rewrite "^/?([^/]+?)(/\.[a-zA-z]+)?$"
              /index.php?q=$1&ext=$2&accept=$http_accept
              last;
 
           # LIXO FORA DE USO:
           #rewrite "^/?geo:(\-?\d+\.?\d*),(\-?\d+\.?\d*)$"
-          #  http://127.0.0.1:5001/rpc/latlng_to_city?lat=$1&lng=$2
+          #  http://127.0.0.1:$SQL1port/rpc/latlng_to_city?lat=$1&lng=$2
           #  last;
           #rewrite "^/?_ipGeo/(\d[\d\.]+)" http://ip-api.com/json/$1 last;
           #rewrite "^/?_ipGeo" http://ip-api.com/json/$remote_addr permanent;
         }
 
         location / {
-                try_files $uri $uri/ @resolver;
+          try_files $uri $uri/ @resolver;
         }
 
         location ~ \.php$ {
@@ -76,10 +79,10 @@ server { #OLC para comparar com plus.codes
         #add_header X-Frame-Options SAMEORIGIN; #iframe
 
         location / {
-                try_files $uri $uri/ @resolver;
+          try_files $uri $uri/ @resolver;
         }
         location  @resolver {
-          rewrite "^/?([^/]+?)(\.[a-zA-z]+)?$"
+          rewrite "^/?([^/]+?)(/\.[a-zA-z]+)?$"
           /index.php?q=$1&ext=$2&accept=$http_accept
           last;
         }

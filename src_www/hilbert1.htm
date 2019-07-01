@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+	<title>Hilbert1</title>
+    <script type="text/javascript" src="http://polymaps.org/polymaps.min.js"></script>
+    <link rel="stylesheet" href="http://polymaps.org/style.css">
+  </head>
+  <body>
+<p>
+Passe o mouse sobre o ladrilho colorido para ver seu código hierárquico. Códigos com mesmo prefixo são certamente vizinhos, mas nem sempre vizinhos possuirão mesmo prefixo, uns ~70% dos pares de vizinhança. 
+<br/>Use mais zoom ou menos zoom (ou botão scroll) para ter nível de partição maior ou menor.
+Use drag (clica e segura sobre a figura) para mover.
+</p>
+
+
+
+<h2>Results</h2>
+(falta comparar benchmark case com Morton curve)
+<p id="report1"></p>
+
+<script type="text/javascript">
+
+var objCmp = {
+ l1:{},l2:{},l3:{},l4:{},l5:{},l6:{}
+};
+
+let tot = 0;  // for perc aerage
+let tot_n = 0;
+
+let lev = 4;
+let side = Math.pow(2, lev);
+//const neighbourhood = [ [0,1],[0,-1],[1,0],[-1,0] ]; // neig4
+const neighbourhood = [ [0,1],[0,-1],[1,0],[-1,0],   [1,1],[1,-1],[-1,1],[-1,-1] ]; // neig8
+console.log("Nivel "+lev," lado="+side);
+
+
+
+
+// from http://bl.ocks.org/mbostock/597287
+
+hilbert = (function() {
+  // Adapted from Nick Johnson: http://blog.notdot.net/2009/11/Damn-Cool-Algorithms-Spatial-indexing-with-Quadtrees-and-Hilbert-Curves
+  var pairs = [
+    [[0, 3], [1, 0], [3, 1], [2, 0]],
+    [[2, 1], [1, 1], [3, 0], [0, 2]],
+    [[2, 2], [3, 3], [1, 2], [0, 1]],
+    [[0, 0], [3, 2], [1, 3], [2, 3]]
+  ];
+  return function(x, y, z) {
+    var quad = 0,
+        pair,
+        i = 0;
+    while (--z >= 0) {
+      pair = pairs[quad][(x & (1 << z) ? 2 : 0) | (y & (1 << z) ? 1 : 0)];
+      i = (i << 2) | pair[0];
+      quad = pair[1];
+    }
+    return i;
+  };
+})();
+
+var po = org.polymaps;
+
+var size = {x: 32, y: 32};
+var theSvg = po.svg("svg")
+var map = po.map()
+    .container(document.body.appendChild( theSvg ))
+    .zoomRange([0, 6])
+    .zoom(4)
+    .center({lat: 0, lon: 0})
+    .tileSize(size)
+    .add(po.interact());
+
+map.add(po.layer(rainbow));
+
+map.add(po.compass()
+    .pan("none"));
+
+function rainbow(tile) {
+  var rect = tile.element = po.svg("rect"),
+      i = hilbert(tile.column, tile.row, tile.zoom),
+      j = ~~(i * 360 / Math.pow(4, tile.zoom)),
+      k = 1 << tile.zoom;
+  if (tile.column < 0 || tile.column >= k) return;
+  rect.setAttribute("width", size.x);
+  rect.setAttribute("height", size.y);
+  rect.setAttribute("fill", hsl(j, 1, .5));
+
+  let maxval = k-1;
+  let hl = hLabel_h(i,tile.zoom);
+  let perc = (tile.column && tile.row && tile.column<maxval && tile.row<maxval)
+      ? ( 'Neighbourhood'+neighbourhood.length+" with same prefix: "+ samePref4(tile.column, tile.row, tile.zoom, hl) + '%' )
+      : ''
+  ;
+  rect.appendChild( // add tooltip (on mouse-over) 
+        po.svg("title")
+        .appendChild( document.createTextNode( hl[0]+"\nlevel "+tile.zoom+"\n"+perc) )
+        .parentNode
+  );
+
+  //var tx = po.svg("text")
+  //tx.setAttribute("x", tile.column* size.x);
+  //tx.setAttribute("y", tile.row*(size.y+1));
+  //tx.appendChild(  document.createTextNode( hpref )  );
+  //theSvg.appendChild( tx  );
+
+}
+
+function hsl(h, s, l) {
+  var m1,
+      m2;
+
+  /* Some simple corrections for h, s and l. */
+  h = h % 360; if (h < 0) h += 360;
+  s = s < 0 ? 0 : s > 1 ? 1 : s;
+  l = l < 0 ? 0 : l > 1 ? 1 : l;
+
+  /* From FvD 13.37, CSS Color Module Level 3 */
+  m2 = l <= .5 ? l * (1 + s) : l + s - l * s;
+  m1 = 2 * l - m2;
+
+  function v(h) {
+    if (h > 360) h -= 360;
+    else if (h < 0) h += 360;
+    if (h < 60) return m1 + (m2 - m1) * h / 60;
+    if (h < 180) return m2;
+    if (h < 240) return m1 + (m2 - m1) * (240 - h) / 60;
+    return m1;
+  }
+
+  function vv(h) {
+    return Math.round(v(h) * 255);
+  }
+
+  return "rgb(" + vv(h + 120) + "," + vv(h) + "," + vv(h - 120) + ")";
+}
+
+////
+
+
+function hLabel_h(h, lev, pref_size=2) {
+  let hlabel = h.toString(4).padStart(lev, '0')
+  let hpref  = hlabel.slice(0,pref_size)
+  if (lev>pref_size) hlabel = hpref +"-"+ hlabel.slice(pref_size)
+  return [hlabel,hpref,h];
+}
+function hLabel(i, j, lev) {
+  let h = hilbert(i, j, lev);
+  return hLabel_h(h, lev);
+}
+
+
+function samePref4(i,j,lev,href) {
+  let ret = [];
+  for (let k of neighbourhood) {
+     let hn = hLabel(i+k[0], j+k[1], lev); // hn[2] é o indice unico do nivel.
+     let cmp = (hn[1]==href[1])? 1: 0;
+     let pair = (hn[2]>href[2])? (href[2]+'-'+hn[2]): (hn[2]+'-'+href[2]); // order to not repeat pairs
+     objCmp['l'+lev][ pair ] = cmp; // global analysis, no reapeat 
+     // falta conferir caso repetido se dá o mesmo ou bug se dá diferente.
+     ret.push( cmp );
+  }
+  let r = ret.reduce( (a,c) => a+c ); // sum all
+  return Math.round(100.0*r/ret.length);
+}
+
+
+let tot2 = 0;
+let tot2_n = 0;
+for(let i=1; i<side-1; i++)
+   for(let j=1; j<side-1; j++) {
+      let h = hLabel(i, j, lev);
+      let x = samePref4(i,j,lev,h);
+      tot2 += x;  // valor de referencia repetido, só para desencargo
+      tot2_n++; 
+   }
+
+// 72% for level4 neig8, 80% for neig4.
+//Average percent of 'same 2-digit prefix' in the neig8 of level5: 86%
+//Average percent of 'same 3-digit prefix' in the neig8 of level5: 69%
+//Average percent of 'same 3-digit prefix' in the neig4 of level5: 77%
+//Average percent of 'same 2-digit prefix' in the neig4 of level5: 90%
+//Average percent of 'same 2-digit prefix' in the neig8 of level4: 72%  (usar esse de benchmark)
+
+let items = Object.values(objCmp['l'+lev]);
+let t = items.reduce( (a,c) => a+c ); // sum all
+document.getElementById('report1').innerHTML = 
+ "Average percent of 'same 2-digit prefix' in the neig"+neighbourhood.length+" of level"+lev+": "+ Math.round(100.0*t/items.length)+"%"
+;
+
+</script>
+<p>
+This script as based on http://bl.ocks.org/mbostock/597287
+See also:
+<li> Vastur/Hilbert: https://bl.ocks.org/vasturiano/aee11f57aaa6b1ec96f1df386166a396</li>
+
+<li> Vastur/Morton: https://bl.ocks.org/vasturiano/db5e9e9cfe77d8c468136dc781ba0cc8</li>
+
+</p>
+<p> And alternative implementation based on L-system (+D3). http://bl.ocks.org/nitaku/8947565
+http://wafi.iit.cnr.it/webvis/lab/preview.php?gist_id=6514960
+
+</body>
+</html>
